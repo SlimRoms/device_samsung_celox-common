@@ -20,7 +20,7 @@ TARGET_BOOTLOADER_BOARD_NAME := MSM8660_SURF
 
 # Kernel
 BOARD_KERNEL_BASE := 0x40400000
-BOARD_KERNEL_CMDLINE := androidboot.hardware=qcom usb_id_pin_rework=true no_console_suspend=true zcache androidboot.selinux=permissive
+BOARD_KERNEL_CMDLINE := androidboot.hardware=qcom usb_id_pin_rework=true no_console_suspend=true zcache androidboot.selinux=enforcing
 BOARD_KERNEL_PAGESIZE := 2048
 BOARD_MKBOOTIMG_ARGS := --ramdisk_offset 0x01400000
 
