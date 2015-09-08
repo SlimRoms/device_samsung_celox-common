@@ -26,11 +26,44 @@ DEVICE_PACKAGE_OVERLAYS += device/samsung/celox-common/overlay
 PRODUCT_AAPT_CONFIG := normal hdpi
 PRODUCT_AAPT_PREF_CONFIG := hdpi
 
+# F2FS
+PRODUCT_PACKAGES += \
+    mkfs.f2fs \
+    fsck.f2fs \
+    fibmap.f2fs
+
+# Bluetooth
+PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/firmware/bcm4330B1.hcd:system/etc/firmware/bcm4330B1.hcd
+
 $(call inherit-product, frameworks/native/build/phone-xhdpi-1024-dalvik-heap.mk)
 
 # System properties
 PRODUCT_PROPERTY_OVERRIDES += \
     ro.sf.lcd_density=240
+
+# Ril props
+PRODUCT_PROPERTY_OVERRIDES += \
+    rild.libpath=/system/lib/libril-qc-qmi-1.so \
+    rild.libargs=-d /dev/smd0 \
+    ro.ril.transmitpower=true \
+    telephony.lteOnGsmDevice=1
+
+# Data modules props
+PRODUCT_PROPERTY_OVERRIDES += \
+    ro.use_data_netmgrd=true \
+    persist.data_netmgrd_nint=16
+
+# SdCard emulation prop
+PRODUCT_PROPERTY_OVERRIDES += \
+    ro.emmc.sdcard.partition=17
+
+# Radio system props
+PRODUCT_PROPERTY_OVERRIDES += \
+    persist.radio.apm_sim_not_pwdn=1 \
+    persist.radio.adb_log_on=1 \
+    persist.radio.add_power_save=1 \
+    persist.radio.snapshot_disabled=1
 
 PRODUCT_PROPERTY_OVERRIDES += \
     persist.audio.fluence.mode=endfire \
