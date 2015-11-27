@@ -42,12 +42,9 @@ on fs
     swapon_all /fstab.qcom
 
     # Symlink hack to fix RIL crashes
-    symlink /data/data/com.android.providers.telephony/shared_prefs/preferred-apn1.xml /data/data/com.android.providers.telephony/shared_prefs/preferred-apn.xml
+    #symlink /data/data/com.android.providers.telephony/shared_prefs/preferred-apn1.xml /data/data/com.android.providers.telephony/shared_prefs/preferred-apn.xml
 
 on post-fs-data
-    mkdir /system/etc/firmware/misc 0771 system system
-    mkdir /system/etc/firmware/misc_mdm 0771 system system
-
     write /sys/devices/i2c-0/0-0024/cyttsp_update_fw 1
 
     chown radio system /efs
@@ -73,10 +70,6 @@ on post-fs-data
     write /data/system/sensors/settings 0
     chmod 0664 /data/system/sensors/settings
 
-    # for parameter
-    chown system radio /dev/block/mmcblk0p12
-    chmod 0660 /dev/block/mmcblk0p12
-
     # DLEVEL
     chown system radio /sys/devices/platform/sec_debug_level
     chmod 0664 /sys/devices/platform/sec_debug_level
@@ -87,15 +80,15 @@ on post-fs-data
     chown radio system /sys/module/subsystem_restart/parameters/restart_level
 
     # permission for fast dormacy for RIL
-    chown system radio /sys/devices/platform/mdm_hsic_pm0/waketime
-    chmod 660 /sys/devices/platform/mdm_hsic_pm0/waketime
     chown radio system /sys/devices/virtual/sec/sdio_al/waketime
-    chmod 660 /sys/devices/virtual/sec/sdio_al/waketime
 
     # Vibetonz
     chmod 0660 /dev/tspdrv
     chown root shell /dev/tspdrv
 
+    # Keydisabler
+    chown system system /sys/class/sec/sec_touchkey/keypad_enable
+    
     chown system system /sys/power/cpufreq_max_limit
     chown system system /sys/power/cpufreq_min_limit
     chown system system /sys/power/cpufreq_table
@@ -325,12 +318,22 @@ on boot
     #camera
     chown system camera /sys/class/ledflash/sec_ledflash/torch
 
-# ko files for vibrator (block this cmd temporary. vibrato driver cause reset during boot)
-    insmod /system/lib/modules/vibrator.ko
+# vibrator (block this cmd temporary. vibrator driver cause reset during boot)
     chown system system /sys/class/timed_output/vibrator/enable
     chmod 0664 /sys/class/timed_output/vibrator/enable
+    chown system system /sys/class/timed_output/vibrator/pwm_value
+    chmod 0660 /sys/class/timed_output/vibrator/pwm_value
+    chown system system /sys/class/timed_output/vibrator/pwm_max
+    chmod 0660 /sys/class/timed_output/vibrator/pwm_max
+    chown system system /sys/class/timed_output/vibrator/pwm_min
+    chmod 0660 /sys/class/timed_output/vibrator/pwm_min
+    chown system system /sys/class/timed_output/vibrator/pwm_default
+    chmod 0660 /sys/class/timed_output/vibrator/pwm_default
+    chown system system /sys/class/timed_output/vibrator/pwm_threshold
+    chmod 0660 /sys/class/timed_output/vibrator/pwm_threshold
 
 # Services begin here
+
 service kickstart /system/bin/qcks l
     oneshot
     disabled
