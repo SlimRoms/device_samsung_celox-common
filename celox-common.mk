@@ -54,10 +54,6 @@ PRODUCT_PROPERTY_OVERRIDES += \
     ro.use_data_netmgrd=true \
     persist.data_netmgrd_nint=16
 
-# SdCard emulation prop
-PRODUCT_PROPERTY_OVERRIDES += \
-    ro.emmc.sdcard.partition=17
-
 # Radio system props
 PRODUCT_PROPERTY_OVERRIDES += \
     persist.radio.apm_sim_not_pwdn=1 \
